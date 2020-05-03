@@ -1,13 +1,15 @@
-# ag  st  jo  fo  na  pw  ps
-# 0   1   2   3   4   5   6
+# age	style	job		food	name	power	position
+# 0		1		2		3		4		5		6
 
+# age	0	15		1	21			2	28			3	32			4	55
 # style 0	baoli	1	wenjian		2 	aishidi		3 	daqi		4	zhigu
 # job   0	kuaiji	1	suanming	2	qishou		3	yisheng		4	chengxuyuan
 # food	0 	xiangsu	1	baiqie		2	hongshao	3	kaoquanyang	4	shiwu4 (qiudaoyu)
 # name	0	mao		1	gu			2	dou			3	gua			4	gou
-# age	0	15		1	21			2	28			3	32			4	55
+# power 0-4, 0 is most powerful
+# pos	0-4
+
 # rule 0-9 = {1 3 5 6 7 8 9 11 12 15}
-# power 0 is most powerful
 
 import numpy as np
 import game1_fc as fc
@@ -265,17 +267,13 @@ permute2_over=True
 while(True):
 	ret=judge(ans) #return verdict and some info, to inspire how to generate
 	if(ret[0]==0): # success! no rule violated
-		break;
+		break
 	ans,permute2_over=generate(ret[1],permute2_over)
 	cnt+=1
-	if(cnt%997==0):
-		print(cnt)
-		print(fc.pcnt)
-		print('current ans')
-		for line in ans:
-			print(line)
+	if(cnt%1000==0):
+		print("Failed. Area ",cnt-1000," to ", cnt-1, " completed.")
 	
-print ("Search cnt: ", cnt, ", area cnt: ", fc.gen_s1_while_cnt , ", spot cnt: ", fc.permute_cnt)
+print ("Succeed! Search cnt: ", cnt, ", area cnt: ", fc.gen_s1_while_cnt , ", spot cnt: ", fc.permute_cnt)
 print("The answer is: ")
 for line in ans:
 	print(line)
