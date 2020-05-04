@@ -86,6 +86,12 @@ def judge(ans):
 	if(jr13(ans)==False):
 		verdict=13
 		return [verdict, isp]
+	if(jr14(ans)==False):
+		verdict=14
+		return [verdict, isp]
+	if(jr15(ans)==False):
+		verdict=15
+		return [verdict, isp]
 	return [verdict, isp]
 
 def jr1(ans):
@@ -244,8 +250,8 @@ def jr14(ans):
 		return True
 
 def jr15(ans):	
-	p1=find_idx_col(ans, 4, 4) 	#	name mao
-	p2=find_idx_col(ans, 1, 4) 	#	style aishidi
+	p1=find_idx_col(ans, 4, 4) 	#	name gou
+	p2=find_idx_col(ans, 1, 4) 	#	style zhigu
 	if(p1==-1 or p2 == -1):
 		return False
 	elif(p1==p2):
@@ -261,19 +267,34 @@ def find_idx_col(ans, col, x):
 		i+=1
 	return -1
 
+ans_stack=[]
 fc.init()
 cnt=0
 permute2_over=True
-while(True):
+prev_ans_length=0
+while(fc.pcnt[8]<1):
 	ret=judge(ans) #return verdict and some info, to inspire how to generate
 	if(ret[0]==0): # success! no rule violated
-		break
+		ans_stack.append([cnt, fc.gen_s1_while_cnt, fc.permute_cnt, ans])
 	ans,permute2_over=generate(ret[1],permute2_over)
 	cnt+=1
+
 	if(cnt%1000==0):
-		print("Failed. Area ",cnt-1000," to ", cnt-1, " completed.")
-	
-print ("Succeed! Search cnt: ", cnt, ", area cnt: ", fc.gen_s1_while_cnt , ", spot cnt: ", fc.permute_cnt)
-print("The answer is: ")
-for line in ans:
-	print(line)
+		print("Area ",cnt-1000," to ", cnt-1, " completed.", " Spotted answer number: ", len(ans_stack)-prev_ans_length, " pcnt :", fc.pcnt)
+		prev_ans_length=len(ans_stack)
+
+def disp_ans(ans):
+	name_str=['DuNai Mao','DuNai Gu','DuNai Dou','DuNai Gua','DuNai Gou']
+	name_id=-1
+	for i in ans:
+		if(i[3]==4):
+			name_id=i[4]
+	return name_str[name_id]
+
+disp_cnt=0
+for item in ans_stack:
+	disp_cnt+=1
+	print ("Status",disp_cnt, " Search cnt: ", item[0], ", area cnt: ", item[1] , ", spot cnt: ", item[2])
+	print("The answer is: ", disp_ans(item[3]), "	Ans. Mat.:")
+	for line in item[3]:
+		print(line)	

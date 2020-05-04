@@ -230,18 +230,6 @@ def add_rule2(isp):
 		return 0
 	return 1
 
-# style 0	baoli	1	wenjian		2 	aishidi		3 	daqi		4	zhigu
-# job   0	kuaiji	1	suanming	2	qishou		3	yisheng		4	chengxuyuan
-# food	0 	xiangsu	1	baiqie		2	hongshao	3	kaoquanyang	4	shiwu4 (qiudaoyu)
-# name	0	mao		1	gu			2	dou			3	gua			4	gou
-# age	0	15		1	21			2	28			3	32			4	55
-# rule 0-9 = {1 3 5 6 7 8 9 11 12 15}
-# power 0 is most powerful
-
-# ag  st  jo  fo  na  pw  ps
-# 0   1   2   3   4   5   6
-
-
 def add_rule3(isp):
 	if((isp[pcnt[3]][1]<0 or isp[pcnt[3]][1]==1) and (isp[pcnt[3]][3]<0 or isp[pcnt[3]][3]==1)):
 		isp[pcnt[3]][1]=1
@@ -265,14 +253,45 @@ def add_rule5(isp):
 	else:
 		return 0
 	return 1
+# style 0	baoli	1	wenjian		2 	aishidi		3 	daqi		4	zhigu
+# job   0	kuaiji	1	suanming	2	qishou		3	yisheng		4	chengxuyuan
+# food	0 	xiangsu	1	baiqie		2	hongshao	3	kaoquanyang	4	shiwu4 (qiudaoyu)
+# name	0	mao		1	gu			2	dou			3	gua			4	gou
+# age	0	15		1	21			2	28			3	32			4	55
+# rule 0-9 = {1 3 5 6 7 8 9 11 12 15}
+# power 0 is most powerful
+
+# ag  st  jo  fo  na  pw  ps
+# 0   1   2   3   4   5   6
 
 def add_rule6(isp):
-	pass
+	if((isp[pcnt[6]][4]<0 or isp[pcnt[6]][4]==2) and (isp[pcnt[6]][2]<0 or isp[pcnt[6]][2]==2)):
+		isp[pcnt[6]][4]=2
+		isp[pcnt[6]][2]=2
+	else:
+		return 0
+	return 1
 
 def add_rule7(isp):
-	pass
+	if((isp[pcnt[7]][4]<0 or isp[pcnt[7]][4]==3) and (isp[pcnt[7]][3]<0 or isp[pcnt[7]][3]==3)):
+		isp[pcnt[7]][4]=3
+		isp[pcnt[7]][3]=3
+	else:
+		return 0
+	return 1
 
 def add_rule8(isp):
-	pass
+	if((isp[pcnt[8]][1]<0 or isp[pcnt[8]][1]==4) and (isp[pcnt[8]][1]<0 or isp[pcnt[8]][1]==4)):
+		isp[pcnt[8]][1]=4
+		isp[pcnt[8]][1]=4
+	else:
+		return 0
+	return 1
+
 def add_rule9(isp):
+	if((isp[pcnt[9]][4]<0 or isp[pcnt[9]][4]==4) and (isp[pcnt[9]][2]<0 or isp[pcnt[9]][2]==4)):
+		isp[pcnt[9]][4]=4
+		isp[pcnt[9]][2]=4
+	else:
+		return 0
 	return 1
