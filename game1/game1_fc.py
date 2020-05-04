@@ -177,6 +177,7 @@ def gen_s3(isp):
 
 def gen_s4(last_ans,gen,if_permute):
 	global permute_cnt
+	flag=True
 	if(if_permute==False):
 		permute_cnt=0
 	for i in range(7):
@@ -184,8 +185,12 @@ def gen_s4(last_ans,gen,if_permute):
 		col_last_ans=get_col(last_ans,i)
 		col_gen=get_col(gen,i)
 		#print('col_last_ans',col_last_ans,'col_gen',col_gen)
-		if(if_permute):
+		if(if_permute and flag):
 			col, permute2_over=next_col(col_last_ans,col_gen)
+			if(not permute2_over and i<5):
+				flag=False
+		elif(flag==False):
+			col=col_last_ans
 		else:
 			col=min_col(col_gen)
 			permute2_over=False
@@ -243,7 +248,7 @@ def next_permute(r):
 	while(pivot>0):
 		if(r[pivot-1]<r[pivot]):
 			flag=True
-			break;
+			break
 		pivot-=1
 	if(flag==False):
 		r.sort()
