@@ -177,15 +177,20 @@ def gen_s3(isp):
 
 def gen_s4(last_ans,gen,if_permute):
 	global permute_cnt
+	flag=True
 	if(if_permute==False):
 		permute_cnt=0
-	for i in range(7):
+	for i in range(6):
 		permute_cnt+=1
 		col_last_ans=get_col(last_ans,i)
 		col_gen=get_col(gen,i)
 		#print('col_last_ans',col_last_ans,'col_gen',col_gen)
-		if(if_permute):
+		if(if_permute and flag):
 			col, permute2_over=next_col(col_last_ans,col_gen)
+			if(not permute2_over and i<5):
+				flag=False
+		elif(flag==False):
+			col=col_last_ans
 		else:
 			col=min_col(col_gen)
 			permute2_over=False
@@ -211,6 +216,7 @@ def next_col(last_ans,gen):
 		if(gen[i]<0 or gen[i]>4):
 			r.append(last_ans[i])
 	p, overFlag=next_permute(r)
+	
 	cnt=0
 	for j in range(len(gen)):
 		if(gen[j]==-1):
@@ -243,7 +249,7 @@ def next_permute(r):
 	while(pivot>0):
 		if(r[pivot-1]<r[pivot]):
 			flag=True
-			break;
+			break
 		pivot-=1
 	if(flag==False):
 		r.sort()
@@ -289,90 +295,91 @@ def resetCnt2():
 def add_rule0(isp):
 	#print('isp f',isp)
 	if((isp[pcnt[0]][0]<0 or isp[pcnt[0]][0]==0) and (isp[pcnt[0]][1]<0 or isp[pcnt[0]][1]==0)):
-		isp[pcnt[0]][0]=0	# 15 years old
-		isp[pcnt[0]][1]=0	# style baoli
+		isp[pcnt[0]][0]=0	#
+		isp[pcnt[0]][1]=0	#
 	else:
 		return 0
 	return 1
 
 def add_rule1(isp):
-	if((isp[pcnt[1]][4]<0 or isp[pcnt[1]][4]==0) and (isp[pcnt[1]][5]<0 or isp[pcnt[1]][5]==0)):
-		isp[pcnt[1]][4]=0
-		isp[pcnt[1]][5]=0	
+	if((isp[pcnt[1]][0]<0 or isp[pcnt[1]][0]==1) and (isp[pcnt[1]][4]<0 or isp[pcnt[1]][4]==0)):
+		isp[pcnt[1]][0]=1 #
+		isp[pcnt[1]][4]=0	#
 	else:
 		return 0
 	return 1
 
 def add_rule2(isp):
-	if((isp[pcnt[2]][0]<0 or isp[pcnt[2]][0]==3) and (isp[pcnt[2]][2]<0 or isp[pcnt[2]][2]==0) ):
-		isp[pcnt[2]][0]=3
+	if((isp[pcnt[2]][0]<0 or isp[pcnt[2]][0]==2) and (isp[pcnt[2]][2]<0 or isp[pcnt[2]][2]==0) ):
+		isp[pcnt[2]][0]=2
 		isp[pcnt[2]][2]=0	
 	else:
 		return 0
 	return 1
 
 def add_rule3(isp):
-	if((isp[pcnt[3]][1]<0 or isp[pcnt[3]][1]==1) and (isp[pcnt[3]][3]<0 or isp[pcnt[3]][3]==1)):
-		isp[pcnt[3]][1]=1
-		isp[pcnt[3]][3]=1
+	if((isp[pcnt[3]][1]<0 or isp[pcnt[3]][1]==2) and (isp[pcnt[3]][2]<0 or isp[pcnt[3]][2]==1)):
+		isp[pcnt[3]][1]=2#
+		isp[pcnt[3]][2]=1#
 	else:
 		return 0
 	return 1
 
 def add_rule4(isp):
-	if((isp[pcnt[4]][4]<0 or isp[pcnt[4]][4]==1) and (isp[pcnt[4]][0]<0 or isp[pcnt[4]][0]==4)):
-		isp[pcnt[4]][4]=1
-		isp[pcnt[4]][0]=4
+	if((isp[pcnt[4]][3]<0 or isp[pcnt[4]][3]==0) and (isp[pcnt[4]][4]<0 or isp[pcnt[4]][4]==1)):
+		isp[pcnt[4]][3]=0#
+		isp[pcnt[4]][4]=1#
 	else:
 		return 0
 	return 1
 
 def add_rule5(isp):
-	if((isp[pcnt[5]][5]<0 or isp[pcnt[5]][5]==2) and (isp[pcnt[5]][2]<0 or isp[pcnt[5]][2]==1)):
-		isp[pcnt[5]][5]=2
-		isp[pcnt[5]][2]=1
+	if((isp[pcnt[5]][1]<0 or isp[pcnt[5]][1]==4) and (isp[pcnt[5]][3]<0 or isp[pcnt[5]][3]==1)):
+		isp[pcnt[5]][1]=4 #
+		isp[pcnt[5]][3]=1 #
 	else:
 		return 0
 	return 1
-# style 0	baoli	1	wenjian		2 	aishidi		3 	daqi		4	zhigu
-# job   0	kuaiji	1	suanming	2	qishou		3	yisheng		4	chengxuyuan
-# food	0 	xiangsu	1	baiqie		2	hongshao	3	kaoquanyang	4	shiwu4 (qiudaoyu)
-# name	0	mao		1	gu			2	dou			3	gua			4	gou
-# age	0	15		1	21			2	28			3	32			4	55
-# rule 0-9 = {1 3 5 6 7 8 9 11 12 15}
-# power 0 is most powerful
-
-# ag  st  jo  fo  na  pw  ps
-# 0   1   2   3   4   5   6
 
 def add_rule6(isp):
-	if((isp[pcnt[6]][4]<0 or isp[pcnt[6]][4]==2) and (isp[pcnt[6]][2]<0 or isp[pcnt[6]][2]==2)):
-		isp[pcnt[6]][4]=2
-		isp[pcnt[6]][2]=2
+	if((isp[pcnt[6]][5]<0 or isp[pcnt[6]][5]==2) and (isp[pcnt[6]][2]<0 or isp[pcnt[6]][2]==2)):
+		isp[pcnt[6]][5]=2 #
+		isp[pcnt[6]][2]=2 #
 	else:
 		return 0
 	return 1
 
 def add_rule7(isp):
-	if((isp[pcnt[7]][4]<0 or isp[pcnt[7]][4]==3) and (isp[pcnt[7]][3]<0 or isp[pcnt[7]][3]==3)):
-		isp[pcnt[7]][4]=3
-		isp[pcnt[7]][3]=3
+	if((isp[pcnt[7]][0]<0 or isp[pcnt[7]][0]==3) and (isp[pcnt[7]][5]<0 or isp[pcnt[7]][5]==0)):
+		isp[pcnt[7]][0]=3#
+		isp[pcnt[7]][5]=0 #
 	else:
 		return 0
 	return 1
 
 def add_rule8(isp):
-	if((isp[pcnt[8]][1]<0 or isp[pcnt[8]][1]==3) and (isp[pcnt[8]][2]<0 or isp[pcnt[8]][2]==3)):
-		isp[pcnt[8]][1]=3
+	if((isp[pcnt[8]][3]<0 or isp[pcnt[8]][3]==2) and (isp[pcnt[8]][2]<0 or isp[pcnt[8]][2]==3)):
+		isp[pcnt[8]][3]=2
 		isp[pcnt[8]][2]=3
 	else:
 		return 0
 	return 1
+# nation	color	drink	cigr 	pet 	pos
+# 0			1		2		3		4		5
 
+# nation	0	eng		1	swiden		2	dmk			3	norway		4	german
+# color		0	red		1	white		2 	green		3 	blue		4	yellow
+# drink		0 	tea		1	coffee		2	milk		3	beer		4	water
+# cigr		0	pall	1	dunh		2	master		3	prince		4	blends
+# pet 		0	dog		1	bird		2	cat			3	horse		4	fish
+# pos		0-4
+
+#			  0 1 2 3 4 5 6 7 8  9
+# rule 0-9 = {1	2 3 5 6 7 8 9 12 13}
 def add_rule9(isp):
-	if((isp[pcnt[9]][4]<0 or isp[pcnt[9]][4]==4) and (isp[pcnt[9]][1]<0 or isp[pcnt[9]][1]==4)):
-		isp[pcnt[9]][4]=4
-		isp[pcnt[9]][1]=4
+	if((isp[pcnt[9]][0]<0 or isp[pcnt[9]][0]==4) and (isp[pcnt[9]][3]<0 or isp[pcnt[9]][3]==3)):
+		isp[pcnt[9]][0]=4
+		isp[pcnt[9]][3]=3
 	else:
 		return 0
 	return 1

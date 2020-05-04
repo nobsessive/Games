@@ -1,40 +1,39 @@
 testAns=[
-	[2, 3, 3, 3, 3, 4, 0],
-	[3, 4, 0, 4, 4, 3, 1],
-	[4, 1, 1, 1, 1, 2, 2],
-	[1, 2, 2, 0, 2, 1, 3],
-	[0, 0, 4, 2, 0, 0, 4]
+	[3, 4, 4, 1, 2, 0],
+	[2, 3, 0, 4, 3, 1],
+	[0, 0, 2, 0, 1, 2],
+	[4, 2, 1, 3, 4, 3],
+	[1, 1, 3, 2, 0, 4]
 ]
-# age	style	job		food	name	power	position
-# 0		1		2		3		4		5		6
+# nation	color	drink	cigr 	pet 	pos
+# 0			1		2		3		4		5
 
-# age	0	15		1	21			2	28			3	32			4	55
-# style 0	baoli	1	wenjian		2 	aishidi		3 	daqi		4	zhigu
-# job   0	kuaiji	1	suanming	2	qishou		3	yisheng		4	chengxuyuan
-# food	0 	xiangsu	1	baiqie		2	hongshao	3	kaoquanyang	4	shiwu4 (qiudaoyu)
-# name	0	mao		1	gu			2	dou			3	gua			4	gou
-# power 0-4, 0 is most powerful
-# pos	0-4
+# nation	0	eng		1	swiden		2	dmk			3	norway		4	german
+# color		0	red		1	white		2 	green		3 	blue		4	yellow
+# drink		0 	tea		1	coffee		2	milk		3	beer		4	water
+# cigr		0	pall	1	dunh		2	master		3	prince		4	blends
+# pet 		0	dog		1	bird		2	cat			3	horse		4	fish
+# pos		0-4
 
-# rule 0-9 = {1 3 5 6 7 8 9 11 12 15}
+# rule 0-9 = {1	2 3 5 6 7 8 9 12 13}
 
 import numpy as np
-import game1_fc as fc
+import game2_fc as fc
 n=5 #number of people
 
-ans=[0]*7
+ans=[0]*6
 ans=[ans]
 for i in range(1,5):
-	ans.append([i]*7)
-ans=np.zeros((5,7))
+	ans.append([i]*6)
+ans=np.zeros((5,6))
 for i in range(5):
-	ans[i]=np.full((1,7),i)
+	ans[i]=np.full((1,6),i)
 
 def generate(isp,permute2_over):
 	global ans
 	global gen_bak
 	overflag=False
-	u=np.full((5,7),-1)
+	u=np.full((5,6),-1)
 
 	if(permute2_over):
 		gen,overflag=fc.gen_s1(u)
@@ -46,10 +45,6 @@ def generate(isp,permute2_over):
 	else:
 		gen=gen_bak.copy()
 		ans,permute2_over=fc.gen_s4(ans,gen,not permute2_over)
-	#print('In generate()')
-	for line in gen:
-		#print(line)
-		continue
 
 	return ans, permute2_over, overflag
 
@@ -101,15 +96,12 @@ def judge(ans,flag=0):
 	if(jr15(ans)==False):
 		verdict=15
 		return [verdict, isp]
-	if(jr16(ans)==False):
-		verdict=16
-		return [verdict, isp]
 
 	return [verdict, isp]
 
 def jr1(ans):
-	p1=find_idx_col(ans, 0, 0)	# 	age 15
-	p2=find_idx_col(ans, 1, 0)	#	style baoli
+	p1=find_idx_col(ans, 0, 0)	# 	nat eng
+	p2=find_idx_col(ans, 1, 0)	#	house red
 	if(p1==-1 or p2 == -1):
 		return False
 	elif(p1==p2):
@@ -118,21 +110,18 @@ def jr1(ans):
 		return False
 
 def jr2(ans):	
-	p1=find_idx_col(ans, 3, 0) 	#	xiangsuya
-	p2=find_idx_col(ans, 1, 0)	#	baoli
+	p1=find_idx_col(ans, 0, 1)	# 	nat swiden
+	p2=find_idx_col(ans, 4, 0)	#	pet dog
 	if(p1==-1 or p2 == -1):
 		return False
-	pos1=ans[p1][6]
-	pos2=ans[p2][6]
-	pos=pos1-pos2
-	if(pos*pos!=1):	#judge
-		return False
-	else:
+	elif(p1==p2):
 		return True
+	else:
+		return False
 
 def jr3(ans):
-	p1=find_idx_col(ans, 4, 0) 	#	name mao
-	p2=find_idx_col(ans, 5, 0) 	#	power 0
+	p1=find_idx_col(ans, 0, 2)	# 	nat dmk
+	p2=find_idx_col(ans, 2, 0) 	#	drink tea
 	if(p1==-1 or p2 == -1):
 		return False
 	elif(p1==p2):
@@ -141,31 +130,27 @@ def jr3(ans):
 		return False
 
 def jr4(ans):
-	p1=find_idx_col(ans, 0, 3) 	#	age 32
-	p2=find_idx_col(ans, 0, 2) 	#	age 28
+	p1=find_idx_col(ans, 1, 2) 	#	color green
+	p2=find_idx_col(ans, 1, 1) 	#	color white
 	if(p1==-1 or p2 == -1):
 		return False
-	power1=ans[p1][5]
-	power2=ans[p2][5]
-	#print('p1',p1,'p2',p2)
-	if(power1<power2):
+	if((ans[p1][5]-ans[p2][5])==-1):
 		return True
 	else:
 		return False
 
 def jr5(ans):
-	p1=find_idx_col(ans, 0, 3) 	#	age 32
-	p2=find_idx_col(ans, 2, 0) 	#	job kuaiji
-	if(p1==-1 or p2 == -1):
+	p1=find_idx_col(ans, 1, 2) #	color green
+	if(p1==-1):
 		return False
-	elif(p1==p2):
+	elif(ans[p1][2]==1):
 		return True
 	else:
 		return False
 
 def jr6(ans):
-	p1=find_idx_col(ans, 1, 1) 	#	style wenjian
-	p2=find_idx_col(ans, 3, 1) 	#	food baiqiejie
+	p1=find_idx_col(ans, 3, 0) 	#	cigr pall
+	p2=find_idx_col(ans, 4, 1) 	#	pet bird
 	if(p1==-1 or p2 == -1):
 		return False
 	elif(p1==p2):
@@ -174,8 +159,8 @@ def jr6(ans):
 		return False
 
 def jr7(ans):
-	p1=find_idx_col(ans, 4, 1) 	#	name gu
-	p2=find_idx_col(ans, 0, 4) 	#	age 55
+	p1=find_idx_col(ans, 1, 4) 	#	color yellow
+	p2=find_idx_col(ans, 3, 1) 	#	cigr dunh
 	if(p1==-1 or p2 == -1):
 		return False
 	elif(p1==p2):
@@ -184,8 +169,8 @@ def jr7(ans):
 		return False
 
 def jr8(ans):
-	p1=find_idx_col(ans, 5, 2) 	#	power middle
-	p2=find_idx_col(ans, 2, 1) 	#	job suanming
+	p1=find_idx_col(ans, 5, 2) 	#	pos middle
+	p2=find_idx_col(ans, 2, 2) 	#	milk
 	if(p1==-1 or p2 == -1):
 		return False
 	elif(p1==p2):
@@ -194,8 +179,8 @@ def jr8(ans):
 		return False
 
 def jr9(ans):
-	p1=find_idx_col(ans, 4, 2) 	#	name dou
-	p2=find_idx_col(ans, 2, 2) 	#	job qishou
+	p1=find_idx_col(ans, 0, 3)	# 	nat norway
+	p2=find_idx_col(ans, 5, 0) 	#	pos 0
 	if(p1==-1 or p2 == -1):
 		return False
 	elif(p1==p2):
@@ -204,12 +189,12 @@ def jr9(ans):
 		return False
 
 def jr10(ans):	
-	p1=find_idx_col(ans, 1, 2) 	#	style aishidi
-	p2=find_idx_col(ans, 3, 2)	#	food hongshao
+	p1=find_idx_col(ans, 3, 4) 	#	cigr blend
+	p2=find_idx_col(ans, 4, 2)	#	pet cat
 	if(p1==-1 or p2 == -1):
 		return False
-	pos1=ans[p1][6]
-	pos2=ans[p2][6]
+	pos1=ans[p1][5]
+	pos2=ans[p2][5]
 	pos=pos1-pos2
 	if(pos*pos!=1):	#judge
 		return False
@@ -217,18 +202,21 @@ def jr10(ans):
 		return True
 
 def jr11(ans):
-	p1=find_idx_col(ans, 4, 3) 	#	name gua
-	p2=find_idx_col(ans, 3, 3) 	#	food kaoquanyang
+	p1=find_idx_col(ans, 4, 3)	#	pet horse
+	p2=find_idx_col(ans, 3, 1) 	#	cigr dunh
 	if(p1==-1 or p2 == -1):
 		return False
-	elif(p1==p2):
-		return True
-	else:
+	pos1=ans[p1][5]
+	pos2=ans[p2][5]
+	pos=pos1-pos2
+	if(pos*pos!=1):	#judge
 		return False
+	else:
+		return True
 
 def jr12(ans):	
-	p1=find_idx_col(ans, 1, 3) 	#	style daqi
-	p2=find_idx_col(ans, 2, 3)	#	job yisheng
+	p1=find_idx_col(ans, 3, 2) 	#	cigr master
+	p2=find_idx_col(ans, 2, 3)	#	drink beer
 	if(p1==-1 or p2 == -1):
 		return False
 	elif(p1==p2):
@@ -237,34 +225,8 @@ def jr12(ans):
 		return False
 
 def jr13(ans):	
-	p1=find_idx_col(ans, 1, 2) 	#	style aishidi
-	p2=find_idx_col(ans, 2, 4)	#	job chengxuyuan
-	if(p1==-1 or p2 == -1):
-		return False
-	pos1=ans[p1][6]
-	pos2=ans[p2][6]
-	pos=pos1-pos2
-	if(pos*pos!=1):	#judge
-		return False
-	else:
-		return True
-
-def jr14(ans):	
-	p1=find_idx_col(ans, 4, 0) 	#	name mao
-	p2=find_idx_col(ans, 0, 1) 	#	age 21
-	if(p1==-1 or p2 == -1):
-		return False
-	pos1=ans[p1][6]
-	pos2=ans[p2][6]
-	pos=pos1-pos2
-	if(pos*pos!=1):	#judge
-		return False
-	else:
-		return True
-
-def jr15(ans):	
-	p1=find_idx_col(ans, 4, 4) 	#	name gou
-	p2=find_idx_col(ans, 1, 4) 	#	style zhigu
+	p1=find_idx_col(ans, 0, 4) 	#	nat german
+	p2=find_idx_col(ans, 3, 3) 	#	cigr prince
 	if(p1==-1 or p2 == -1):
 		return False
 	elif(p1==p2):
@@ -272,13 +234,36 @@ def jr15(ans):
 	else:
 		return False
 
-def jr16(ans):	
-	p1=find_idx_col(ans, 0, 3) 	#	age 32
-	p2=find_idx_col(ans, 0, 2) 	#	age 28
+# nation	color	drink	cigr 	pet 	pos
+# 0			1		2		3		4		5
+
+# nation	0	eng		1	swiden		2	dmk			3	norway		4	german
+# color		0	red		1	white		2 	green		3 	blue		4	yellow
+# drink		0 	tea		1	coffee		2	milk		3	beer		4	water
+# cigr		0	pall	1	dunh		2	master		3	prince		4	blends
+# pet 		0	dog		1	bird		2	cat			3	horse		4	fish
+# pos		0-4
+
+def jr14(ans):	
+	p1=find_idx_col(ans, 0, 3) 	#	nat norway
+	p2=find_idx_col(ans, 1, 3) 	#	color blue
 	if(p1==-1 or p2 == -1):
 		return False
-	pos1=ans[p1][6]
-	pos2=ans[p2][6]
+	pos1=ans[p1][5]
+	pos2=ans[p2][5]
+	pos=pos1-pos2
+	if(pos*pos!=1):	#judge
+		return False
+	else:
+		return True
+
+def jr15(ans):	
+	p1=find_idx_col(ans, 3, 4) 	#	cigr blends
+	p2=find_idx_col(ans, 2, 4) 	#	drink water
+	if(p1==-1 or p2 == -1):
+		return False
+	pos1=ans[p1][5]
+	pos2=ans[p2][5]
 	pos=pos1-pos2
 	if(pos*pos!=1):	#judge
 		return False
@@ -304,12 +289,13 @@ cnt=0
 permute2_over=True
 prev_ans_length=0
 fc.dbflag=-1
-while(True and fc.pcnt[10]<1):
+#fc.pcnt=[2,4,1,3,2,0,2,0,4,3,0]#db
+while(True and fc.pcnt[9]<3):
 	ret=judge(ans) #return verdict and some info, to inspire how to generate
 	if(ret[0]==0): # success! no rule violated
-		if(power_pos_test(ans)):
-			ans_stack.append([cnt, fc.gen_s1_while_cnt, fc.permute_cnt, ans])
+		ans_stack.append([cnt, fc.gen_s1_while_cnt, fc.permute_cnt, ans])
 	ans,permute2_over,overflag=generate(ret[1],permute2_over)
+
 	if(overflag):
 		break
 	cnt+=1
@@ -319,27 +305,24 @@ while(True and fc.pcnt[10]<1):
 		prev_ans_length=len(ans_stack)
 	if(cnt>3000):
 		fc.dbflag=0
+	#print("pcnt",fc.pcnt)
+	#print("ans", ans)
+	#if(fc.pcnt[0]==4):
+		#break
 
-#print(judge(testAns))
-#fc.pcnt=[4,4,1,2,2,2,3,0,0,1,0]
-#u=np.full((5,7),-1)
-#gen=fc.gen_s1(u,1)
-#print("gen",gen)
 
 
 def disp_ans(ans):
-	name_str=['DuNai Mao','DuNai Gu','DuNai Dou','DuNai Gua','DuNai Gou']
+	name_str=['English','Swedish','Danes','Norwegian','German']
 	name_id=-1
 	for i in ans:
-		if(i[3]==4):
+		if(i[4]==4):
 			name_id=i[4]
 	return name_str[name_id]
 
 disp_cnt=0
 for item in ans_stack:
 	disp_cnt+=1
-	if(power_pos_test(item[3])==False):
-		continue
 	print ("Status",disp_cnt, " Search cnt: ", item[0], ", area cnt: ", item[1] , ", spot cnt: ", item[2])
 	print("The answer is: ", disp_ans(item[3]), "	Ans. Mat.:")
 	for line in item[3]:
