@@ -1,0 +1,34 @@
+The answer is:  German 	Ans. Mat.:
+[3 4 4 1 2 0]
+[2 3 0 4 3 1]
+[0 0 2 0 1 2]
+[4 2 1 3 4 3]
+[1 1 3 2 0 4]
+Status 2  Search cnt:  2119 , area cnt:  48774 , spot cnt:  12
+The answer is:  German 	Ans. Mat.:
+[0 0 2 0 1 2]
+[3 4 4 1 2 0]
+[2 3 0 4 3 1]
+[4 2 1 3 4 3]
+[1 1 3 2 0 4]
+Status 3  Search cnt:  3364 , area cnt:  81226 , spot cnt:  36
+The answer is:  German 	Ans. Mat.:
+[2 3 0 4 3 1]
+[3 4 4 1 2 0]
+[0 0 2 0 1 2]
+[4 2 1 3 4 3]
+[1 1 3 2 0 4]
+Status 4  Search cnt:  5481 , area cnt:  129999 , spot cnt:  36
+The answer is:  German 	Ans. Mat.:
+[0 0 2 0 1 2]
+[2 3 0 4 3 1]
+[3 4 4 1 2 0]
+[4 2 1 3 4 3]
+[1 1 3 2 0 4]
+Status 5  Search cnt:  6576 , area cnt:  146225 , spot cnt:  36
+The answer is:  German 	Ans. Mat.:
+[2 3 0 4 3 1]
+[0 0 2 0 1 2]
+[3 4 4 1 2 0]
+[4 2 1 3 4 3]
+[1 1 3 2 0 4]

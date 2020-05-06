@@ -289,8 +289,8 @@ cnt=0
 permute2_over=True
 prev_ans_length=0
 fc.dbflag=-1
-#fc.pcnt=[2,4,1,3,2,0,2,0,4,3,0]#db
-while(True and fc.pcnt[9]<3):
+fc.pcnt=[2,4,1,3,2,0,2,0,4,3,0]#db
+while(True and fc.pcnt[10]<1):
 	ret=judge(ans) #return verdict and some info, to inspire how to generate
 	if(ret[0]==0): # success! no rule violated
 		ans_stack.append([cnt, fc.gen_s1_while_cnt, fc.permute_cnt, ans])

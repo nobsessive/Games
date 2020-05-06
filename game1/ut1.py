@@ -1,3 +1,4 @@
+#import numpy as np
 def next_permute(r):
 	l=len(r)
 	pivot=l-1
@@ -5,7 +6,7 @@ def next_permute(r):
 	while(pivot>0):
 		if(r[pivot-1]<r[pivot]):
 			flag=True
-			break;
+			break
 		pivot-=1
 	if(flag==False):
 		r.sort()
