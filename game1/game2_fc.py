@@ -1,5 +1,5 @@
 n=5						# number of people
-pcnt=[0]*11				# search cnt
+pcnt=[0]*11				# search cnt, determine which state is generated in gen_s1()
 pcnt2=[0]*5				# search2 cnt
 gen_s1_while_cnt=0		# area cnt
 gen_s2_while_cnt=0		# area2 cnt
@@ -11,18 +11,18 @@ def init():
 	pcnt[8]=0
 	pcnt[7]=0
 
+#the first phase of generating a legal state based on pcnt[]
 def gen_s1(isq, dbflag=-1):
 	global gen_s1_while_cnt
 	global pcnt
+	global ruleFuncList
 	case_over_flag=False
 	
 	while(True):
+		##	debug related section
 		if(dbflag>-1):
 			print("pcnt",pcnt)
-			
-			dbflag+=1
-		if(dbflag>2):
-			break
+		#	\debug related section
 
 		if(pcnt[10]==1):
 			print("gen_s1 completed every case")
@@ -32,94 +32,22 @@ def gen_s1(isq, dbflag=-1):
 		gen_s1_while_cnt+=1
 		isp=isq.copy()
 
-		ret=add_rule0(isp)
-		
-		if(ret==0):
-			ret=raiseCnt(0)
+		## new revision using functino pointer
+		fcnt=len(ruleFuncList)
+		for i in range(fcnt-1):
+			ret=ruleFuncList[i](isp)
 			if(ret==0):
-				print("failed: s1 completed every case")
-				break
-			continue
-		ret=add_rule1(isp)
-		if(ret==0):
-			ret=raiseCnt(1)
-			if(ret==0):
-				print("failed: s1 completed every case")
-				break
-			continue
-		
-		ret=add_rule2(isp)
-		#print("add rule2",isp)
-		#if(gen_s1_while_cnt>1):
-			#break
-		if(ret==0):
-			ret=raiseCnt(2)
-			if(ret==0):
-				print("failed: s1 completed every case")
-				break
-			continue
+				ret=raiseCnt(0)
+				continue
 
-		ret=add_rule3(isp)
-		if(ret==0):
-			ret=raiseCnt(3)
-			if(ret==0):
-				print("failed: s1 completed every case")
-				break
-			continue
-		ret=add_rule4(isp)
-		if(ret==0):
-			ret=raiseCnt(4)
-			if(ret==0):
-				print("failed: s1 completed every case")
-				break
-			continue
-
-		ret=add_rule5(isp)
-		if(ret==0):
-			ret=raiseCnt(5)
-			if(ret==0):
-				print("failed: s1 completed every case")
-				break
-			continue
-		ret=add_rule6(isp)
-		if(ret==0):
-			ret=raiseCnt(6)
-			if(ret==0):
-				print("failed: s1 completed every case")
-				break
-			continue
-		
-		ret=add_rule7(isp)
-		if(ret==0):
-			ret=raiseCnt(7)
-			if(ret==0):
-				print("failed: s1 completed every case")
-				break
-			continue
-		ret=add_rule8(isp)
-		if(ret==0):
-			ret=raiseCnt(8)
-			if(ret==0):
-				print("failed: s1 completed every case")
-				break
-			continue
-		ret=add_rule9(isp)
+		ret=ruleFuncList[fcnt-1](isp) #add the last rule
 		if(ret==0):
 			ret=raiseCnt(9)
-			if(ret==0):
-				print("failed: s1 completed every case")
-				break
 			continue
 		else:
 			ret=raiseCnt(9)
-			if(ret==0):
-				pcnt[10]=5
 			break
-	
-	if(dbflag>-1):
-		print("return isp", isp)
-
-
+		# \new revision using functino pointer
 	return isp, case_over_flag
 
 def gen_s2(gen):
@@ -395,3 +323,6 @@ def add_2rule2():
 
 def add_2rule3():
 	return 1
+
+ruleFuncList=[add_rule0,add_rule1,add_rule2,add_rule3,add_rule4,\
+	add_rule5,add_rule6,add_rule7,add_rule8,add_rule9]
